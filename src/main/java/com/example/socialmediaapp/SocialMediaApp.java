@@ -34,9 +34,13 @@ public class SocialMediaApp {
             try {
                 if (commands[0].equalsIgnoreCase("RegisterUser")) {
                     int userId = Integer.parseInt(commands[1]);
+                    if(userId > 0) {
                     String username = commands[2];
                     service.registerUser(userId, username);
                     System.out.println(username + " Registered!!");
+                    } else {
+                        System.out.println("User Id can't be negative.");
+                    }
 
                 } else if (commands[0].equalsIgnoreCase("UploadPost")) {
                     int userId = Integer.parseInt(commands[1]);
