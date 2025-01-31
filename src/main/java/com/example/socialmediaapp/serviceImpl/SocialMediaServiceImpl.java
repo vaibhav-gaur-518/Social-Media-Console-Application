@@ -89,24 +89,19 @@ public class SocialMediaServiceImpl implements SocialMediaService {
 
         List<PostsDto> feed = new ArrayList<>();
 
-        // 1. Posts from followed users:
         List<PostsDto> followedPosts = currentUser.getFollowing().stream()
-                .flatMap(followedUser -> followedUser.getPosts().stream()) // Flatten the posts
+                .flatMap(followedUser -> followedUser.getPosts().stream()) 
                 .collect(Collectors.toList());
 
-        // 2. Posts from non-followed users:
         List<PostsDto> otherPosts = users.values().stream()
-                .filter(user -> !currentUser.getFollowing().contains(user) && user != currentUser) // Exclude followed and current user
+                .filter(user -> !currentUser.getFollowing().contains(user) && user != currentUser) 
                 .flatMap(user -> user.getPosts().stream())
                 .collect(Collectors.toList());
 
-        // Sort followed posts by postTime (most recent first)
         followedPosts.sort(Comparator.comparing(PostsDto::getPostTime).reversed());
 
-        // Sort other posts by postTime (most recent first)
         otherPosts.sort(Comparator.comparing(PostsDto::getPostTime).reversed());
 
-        // Combine and convert to DTOs:
         for (PostsDto post : followedPosts) {
             feed.add(convertToDto(post));
         }
